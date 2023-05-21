@@ -1,4 +1,4 @@
-use super::verbosity::{verbose_enough, Verbosity, MessageVerbosity, ConfiguredVerbosity};
+use super::verbosity::{verbose_enough, ConfiguredVerbosity, MessageVerbosity, Verbosity};
 
 // DATACLASS
 // =============================================================================================
@@ -39,7 +39,7 @@ pub struct ObsidianModuleConfig<'a> {
 
 // recommended way to instantiate a new ObsidianModule struct
 pub fn new(config: ObsidianModuleConfig) -> ObsidianModule {
-    let obsmod = ObsidianModule{
+    let obsmod = ObsidianModule {
         module_name: config.module_name.to_string(),
         module_class_name: config.module_class_name.to_string(),
         ..Default::default()
@@ -62,7 +62,6 @@ impl ObsidianModule {
         return format!("{} ({})", self.module_name, self.module_class_name);
     }
 }
-
 
 // def __init__(self, module_data_folder, module_name, persistent=None):
 // # overwrites

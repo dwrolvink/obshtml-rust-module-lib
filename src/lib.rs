@@ -7,6 +7,6 @@ pub fn read_file(file_path: &str) -> Option<String> {
         Err(e) => {
             println!("read_file function failed with error: \"{}\"", e);
             None
-        },
-    }
-} 
+        }
+    };
+}
