@@ -2,9 +2,11 @@
 // (if you choose Info, Warning and Error will also be shown)
 pub enum Verbosity {
     Debug = 0,
-    Info = 1,
-    Warning = 2,
-    Error = 3,
+    Info = 10,
+    Deprecation = 20,
+    Warning = 30,
+    Error = 40,
+    Quiet = 50
 }
 pub struct MessageVerbosity(pub Verbosity);
 pub struct ConfiguredVerbosity(pub Verbosity);
@@ -20,12 +22,29 @@ pub fn verbose_enough(
     return msg_level >= conf_level;
 }
 
-/*
-    // Usage:
-    let print = verbose_enough(ConfiguredVerbosity(Verbosity::Error), MessageVerbosity(Verbosity::Info));
-    if print == true {
-        println!("message printed");
-    } else {
-        println!("message hidden");
+
+// TESTS
+// ====================================================================================
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn return_false_if_not_verbose_enough() {
+        let print = verbose_enough(ConfiguredVerbosity(Verbosity::Error), MessageVerbosity(Verbosity::Info));
+        assert_eq!(print, false);
     }
-*/
+
+    #[test]
+    fn return_true_if_verbose_enough() {
+        let print = verbose_enough(ConfiguredVerbosity(Verbosity::Info), MessageVerbosity(Verbosity::Error));
+        assert_eq!(print, true);
+    }
+
+    #[test]
+    fn return_true_if_verbose_enough_equal() {
+        let print = verbose_enough(ConfiguredVerbosity(Verbosity::Deprecation), MessageVerbosity(Verbosity::Deprecation));
+        assert_eq!(print, true);
+    }
+}
