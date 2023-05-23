@@ -1,6 +1,6 @@
 extern crate json;
 
-mod obshtml {
+mod module {
     pub mod module;
     pub mod verbosity;
 }
@@ -22,7 +22,7 @@ use lib::paths::{PosixPath, AbsolutePosixPath, RelativePosixPath};
 use cli::config::Config as CliConfig;
 use cli::execute;
 
-use obshtml::module::{ObsidianModuleConfig};
+use module::module::{ObsidianModuleConfig};
 
 
 fn main() {

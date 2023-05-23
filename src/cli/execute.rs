@@ -1,6 +1,6 @@
 use super::super::stdlib::*;
 use super::super::lib::errors::{Error};
-use super::super::obshtml::module::{ObsidianModule, ObsidianModuleConfig};
+use super::super::module::module::{ObsidianModule, ObsidianModuleConfig};
 use super::config::{Config, RunConfig, AcceptConfig};
 
 // EXECUTE
