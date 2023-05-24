@@ -7,13 +7,13 @@
 use std;
 
 // quick print statement for lazy fingers
-//#[macro_export]
+#[macro_export]
 macro_rules! out {
     ($val:expr) => {
         println!("{}", $val);
     };
 }
-pub(crate) use out;
+pub(crate) use out; 
 
 // get all commandline arguments
 pub fn sys_argsv() -> Vec<String> {

@@ -1,10 +1,14 @@
-use super::errors::{Error};
+use crate::lib::errors::{Error};
 
 // POSIX PATHS
 // ===============================================================================
 /*
     let abspath = AbsolutePosixPath::new("/path/to/file.json".to_string());
     println!("{}", abspath.to_string());
+
+    let pxp = PosixPath::AbsolutePosixPath(AbsolutePosixPath("/path/to/files.json".to_string()));
+    println!("my path: {}", pxp.to_string());
+
 */
 
 pub struct RelativePosixPath(pub String);
