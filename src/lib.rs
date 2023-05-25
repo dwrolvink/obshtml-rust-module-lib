@@ -3,6 +3,7 @@ pub mod stdlib;
 pub mod module {
     pub mod verbosity;
     pub mod baseclass;
+    pub mod options;
 }
 pub mod cli {
     pub mod config;
@@ -15,3 +16,4 @@ pub mod lib {
 }
 
 pub type ObsidianModuleConfig<'a> = module::baseclass::ObsidianModuleConfig<'a>;
+pub type ObsidianModule = module::baseclass::ObsidianModule;

@@ -1,3 +1,5 @@
+use yaml_rust::Yaml;
+
 use crate::module::verbosity::{verbose_enough, Verbosity, ConfiguredVerbosity, MessageVerbosity};
 
 use crate::lib::errors;
@@ -17,9 +19,10 @@ pub struct ObsidianModule {
     pub module_name: String,
     pub module_class_name: String,
     pub persistent: bool,
+    pub default_options: Yaml,
     pub states: ObsidianModuleStates,
-    pub run_fn: fn(String),
-    pub accept_fn: fn(String),
+    pub run_fn: fn(ObsidianModule),
+    pub accept_fn: fn(ObsidianModule),
     verbosity_overwrite: Option<ConfiguredVerbosity>,
 }
 impl Default for ObsidianModule {
@@ -29,6 +32,7 @@ impl Default for ObsidianModule {
             module_class_name: "ObsidianModule".to_string(),
             verbosity_overwrite: None,
             persistent: false,
+            default_options: Yaml::Null,
             run_fn: placeholder_run_fn,
             accept_fn: placeholder_accept_fn,
             states: ObsidianModuleStates{
@@ -37,10 +41,10 @@ impl Default for ObsidianModule {
         }
     }
 }
-fn placeholder_run_fn(module_data_folder: String) {
+fn placeholder_run_fn(obsmod: ObsidianModule) {
     panic!("No run_fn function passed in, this should not be possible");
 }
-fn placeholder_accept_fn(module_data_folder: String) {
+fn placeholder_accept_fn(obsmod: ObsidianModule) {
     panic!("No accept_fn function passed in, this should not be possible");
 }
 /*
@@ -59,8 +63,9 @@ pub struct ObsidianModuleConfig<'a> {
     pub module_name: &'a str,
     pub module_class_name: &'a str,
     pub persistent: bool,
-    pub run_fn: fn(String),
-    pub accept_fn: fn(String),
+    pub default_options: Yaml,
+    pub run_fn: fn(ObsidianModule),
+    pub accept_fn: fn(ObsidianModule),
 }
 
 // METHODS
@@ -73,6 +78,7 @@ impl ObsidianModule {
             module_name: config.module_name.to_string(),
             module_class_name: config.module_class_name.to_string(),
             persistent: config.persistent,
+            default_options: config.default_options.clone(),
             run_fn: config.run_fn,
             accept_fn: config.accept_fn,
             ..Default::default()

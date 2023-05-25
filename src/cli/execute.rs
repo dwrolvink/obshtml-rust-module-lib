@@ -20,20 +20,20 @@ pub fn start(obs_cfg: ObsidianModuleConfig){
 
 pub fn execute_run(cli_cfg: RunConfig, obs_cfg: ObsidianModuleConfig) -> Result<String, Error> {
     let obsmod = ObsidianModule::new(&obs_cfg);
-    println!("Running run_fn for:\n\t{}", obsmod.nametag());
+    //println!("Running run_fn for:\n\t{}", obsmod.nametag());
 
     let mdf = cli_cfg.module_data_folder.to_string();
-    (obs_cfg.run_fn)(mdf);
+    (obs_cfg.run_fn)(obsmod);
 
     return Ok(format!("done with {}", cli_cfg.command));
 }
 pub fn execute_accept(cli_cfg: AcceptConfig, obs_cfg: ObsidianModuleConfig) -> Result<String, Error> {
     //dbg!(obs_cfg.run_fn);
     let obsmod = ObsidianModule::new(&obs_cfg);
-    println!("Running accept_fn for:\n\t{}", obsmod.nametag());
+    //println!("Running accept_fn for:\n\t{}", obsmod.nametag());
     
-    let mdf = cli_cfg.module_data_folder.to_string();
-    (obs_cfg.accept_fn)(mdf);
+    //let mdf = cli_cfg.module_data_folder.to_string();
+    (obs_cfg.accept_fn)(obsmod);
     
     return Ok(format!("done with {}", cli_cfg.command));
 }
