@@ -20,6 +20,10 @@ pub fn variant_eq<T>(a: &T, b: &T) -> bool {
     std::mem::discriminant(a) == std::mem::discriminant(b)
 }
 
+pub fn get_type_of<T>(_: &T) -> &str {
+    return std::any::type_name::<T>()
+}
+
 // get all commandline arguments
 pub fn sys_argsv() -> Vec<String> {
     return std::env::args().collect();

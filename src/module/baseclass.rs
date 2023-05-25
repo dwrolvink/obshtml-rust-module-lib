@@ -1,9 +1,12 @@
 use yaml_rust::Yaml;
+use yaml_rust::yaml::Hash;
 
 use crate::module::verbosity::{verbose_enough, Verbosity, ConfiguredVerbosity, MessageVerbosity};
 
 use crate::lib::errors;
 use crate::lib::paths::{RelativePosixPath, AbsolutePosixPath, PosixPath};
+use super::options;
+
 /*
     What does a rust module need to do to be called by ObsidianHtml, and work as intended?
     What needs to be in the python wrapper?
@@ -20,6 +23,7 @@ pub struct ObsidianModule {
     pub module_class_name: String,
     pub persistent: bool,
     pub default_options: Yaml,
+    pub options: Yaml,
     pub states: ObsidianModuleStates,
     pub run_fn: fn(ObsidianModule),
     pub accept_fn: fn(ObsidianModule),
@@ -33,6 +37,7 @@ impl Default for ObsidianModule {
             verbosity_overwrite: None,
             persistent: false,
             default_options: Yaml::Null,
+            options: Yaml::Null,
             run_fn: placeholder_run_fn,
             accept_fn: placeholder_accept_fn,
             states: ObsidianModuleStates{
@@ -74,7 +79,7 @@ impl ObsidianModule {
 
     // recommended way to instantiate a new ObsidianModule struct
     pub fn new(config: &ObsidianModuleConfig) -> ObsidianModule {
-        let obsmod = ObsidianModule {
+        let mut obsmod = ObsidianModule {
             module_name: config.module_name.to_string(),
             module_class_name: config.module_class_name.to_string(),
             persistent: config.persistent,
@@ -83,7 +88,15 @@ impl ObsidianModule {
             accept_fn: config.accept_fn,
             ..Default::default()
         };
+
+        // merge default config and config from user
+        obsmod.load_options();
+
         return obsmod;
+    }
+
+    pub fn load_options(&mut self) {
+        self.options = options::get_options(self)
     }
 
     // return f'{self.module_name} ({self.module_class_name})'

@@ -18,12 +18,21 @@ mod lib {
 
 mod stdlib;
 
-use crate::module::options::{test};
+use crate::module::options::{compile_default_options, get_configured_options, get_options};
 
 
 
 fn main() {
-    // println!("{}", "I have no feet but I must run");
+    println!("{}", "I have no feet but I must run");
+//     let default = compile_default_options("
+// a:
+//   a1: old (should be overwritten)
+//   a2: old (should not be overwritten)
+// b: old (should be overwritten)
+// c: old (only in default)
+//     ");
 
-    test();
+//     let configured = get_configured_options("test").unwrap();
+//     let options = get_options(default, &configured);
+
 }
