@@ -12,16 +12,23 @@ pub fn compile_default_options(options_yaml_str: &str) -> Yaml {
     return obj.clone();
 }
 
-pub fn get_configured_options(module_name: &str) -> Option<Yaml> {
-    let contents = read_file("/home/dorus/git/obsidian-html/output/mod/config.yml");
-    //println!("{}", contents.unwrap());
+pub fn get_configured_options(obsmod: &ObsidianModule) -> Option<Yaml> {
+    // get module name
+    let module_name = obsmod.module_name.as_str();
+    
+    // determine config file path
+    let mut config_file_path = obsmod.module_data_folder.to_string();
+    config_file_path.push_str("/config.yml");
 
+    // read contents of config file
+    //eprintln!("Debug: reading config from file: {}", config_file_path);
+    let contents = read_file(&config_file_path);
+
+    // parse config file contents as yaml
     let docs = YamlLoader::load_from_str(contents.unwrap().as_str()).unwrap();
     let doc = &docs[0];
 
-    // Debug support
-    //println!("{:?}", doc["module_list"]["preparation"]);
-
+    // extract only the module config of our module
     let module_configs = &doc["module_config"];
     let modconf = &module_configs[module_name];
 
@@ -34,9 +41,8 @@ pub fn get_configured_options(module_name: &str) -> Option<Yaml> {
 //pub fn get_options(default: Yaml, configured: &Yaml) -> Hash {
 pub fn get_options(obsmod: &ObsidianModule) -> Yaml {
     // get default options
-    let module_name = obsmod.module_name.as_str();
     let default = obsmod.default_options.clone();
-    let configured = get_configured_options(module_name).unwrap();
+    let configured = get_configured_options(obsmod).unwrap();
 
     fn rec(mut default: Hash, configured: &Yaml) -> Hash {// -> Yaml {
         for entry in default.iter_mut() {

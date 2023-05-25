@@ -24,6 +24,7 @@ pub struct ObsidianModule {
     pub persistent: bool,
     pub default_options: Yaml,
     pub options: Yaml,
+    pub module_data_folder: AbsolutePosixPath,
     pub states: ObsidianModuleStates,
     pub run_fn: fn(ObsidianModule),
     pub accept_fn: fn(ObsidianModule),
@@ -38,6 +39,7 @@ impl Default for ObsidianModule {
             persistent: false,
             default_options: Yaml::Null,
             options: Yaml::Null,
+            module_data_folder: AbsolutePosixPath::new("".to_string()).unwrap(),
             run_fn: placeholder_run_fn,
             accept_fn: placeholder_accept_fn,
             states: ObsidianModuleStates{
@@ -78,10 +80,11 @@ pub struct ObsidianModuleConfig<'a> {
 impl ObsidianModule {
 
     // recommended way to instantiate a new ObsidianModule struct
-    pub fn new(config: &ObsidianModuleConfig) -> ObsidianModule {
+    pub fn new(config: &ObsidianModuleConfig, mdf: AbsolutePosixPath) -> ObsidianModule {
         let mut obsmod = ObsidianModule {
             module_name: config.module_name.to_string(),
             module_class_name: config.module_class_name.to_string(),
+            module_data_folder: mdf,
             persistent: config.persistent,
             default_options: config.default_options.clone(),
             run_fn: config.run_fn,

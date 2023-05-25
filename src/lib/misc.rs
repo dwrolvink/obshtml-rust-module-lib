@@ -6,7 +6,7 @@ pub fn read_file(file_path: &str) -> Option<String> {
     return match contents {
         Ok(x) => Some(x),
         Err(e) => {
-            println!("read_file function failed with error: \"{}\"", e);
+            eprintln!("read_file function failed with error: \"{}\" (path: {})", e, file_path);
             None
         }
     };
