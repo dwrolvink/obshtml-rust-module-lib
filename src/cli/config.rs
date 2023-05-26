@@ -1,5 +1,5 @@
 use crate::stdlib::*;
-use crate::lib::paths::{PosixPath, AbsolutePosixPath, RelativePosixPath};
+use crate::lib::paths::{AbsolutePosixPath}; //, PosixPath, RelativePosixPath};
 use crate::lib::misc::{expect_at_least_n_args};
 
 // CONFIG

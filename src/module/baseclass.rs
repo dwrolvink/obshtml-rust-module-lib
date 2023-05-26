@@ -1,11 +1,11 @@
 use yaml_rust::Yaml;
-use yaml_rust::yaml::Hash;
+// use yaml_rust::yaml::Hash;
 
-use crate::module::verbosity::{verbose_enough, Verbosity, ConfiguredVerbosity, MessageVerbosity};
+use crate::module::verbosity::{verbose_enough, ConfiguredVerbosity, MessageVerbosity};
 use crate::module::modfile::{Modfile};
 
-use crate::lib::errors;
-use crate::lib::paths::{RelativePosixPath, AbsolutePosixPath, PosixPath};
+// use crate::lib::errors;
+use crate::lib::paths::{AbsolutePosixPath}; //, RelativePosixPath, PosixPath};
 use super::options;
 
 /*
@@ -29,14 +29,14 @@ pub struct ObsidianModule {
     pub states: ObsidianModuleStates,
     pub run_fn: fn(ObsidianModule),
     pub accept_fn: fn(ObsidianModule),
-    verbosity_overwrite: Option<ConfiguredVerbosity>,
+    _verbosity_overwrite: Option<ConfiguredVerbosity>,
 }
 impl Default for ObsidianModule {
     fn default() -> ObsidianModule {
         ObsidianModule {
             module_name: "<module_name>".to_string(),
             module_class_name: "ObsidianModule".to_string(),
-            verbosity_overwrite: None,
+            _verbosity_overwrite: None,
             persistent: false,
             default_options: Yaml::Null,
             options: Yaml::Null,
@@ -44,14 +44,16 @@ impl Default for ObsidianModule {
             run_fn: placeholder_run_fn,
             accept_fn: placeholder_accept_fn,
             states: ObsidianModuleStates{
-                cancelled_run: false
+                _cancelled_run: false
             }
         }
     }
 }
+#[allow(unused_variables)]
 fn placeholder_run_fn(obsmod: ObsidianModule) {
     panic!("No run_fn function passed in, this should not be possible");
 }
+#[allow(unused_variables)]
 fn placeholder_accept_fn(obsmod: ObsidianModule) {
     panic!("No accept_fn function passed in, this should not be possible");
 }
@@ -61,7 +63,7 @@ fn placeholder_accept_fn(obsmod: ObsidianModule) {
 */
 
 pub struct ObsidianModuleStates {
-    cancelled_run: bool
+    _cancelled_run: bool
 }
 
 // INSTANTIATION

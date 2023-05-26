@@ -1,4 +1,4 @@
-use crate::stdlib::*;
+//use crate::stdlib::*;
 use crate::lib::errors::{Error};
 use crate::module::baseclass::{ObsidianModule, ObsidianModuleConfig};
 use crate::cli::config::{Config, RunConfig, AcceptConfig};
@@ -12,10 +12,10 @@ pub fn start(obs_cfg: ObsidianModuleConfig){
     let config = Config::new();
 
     // execute the correct method based on type of config object
-    let res = match config {
+    match config {
         Config::RunConfig(cli_cfg) => execute::execute_run(cli_cfg, obs_cfg),
         Config::AcceptConfig(cli_cfg) =>  execute::execute_accept(cli_cfg, obs_cfg),
-    };
+    }.unwrap();
 }
 
 pub fn execute_run(cli_cfg: RunConfig, obs_cfg: ObsidianModuleConfig) -> Result<String, Error> {

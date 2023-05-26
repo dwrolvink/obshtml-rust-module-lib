@@ -1,4 +1,4 @@
-use yaml_rust::{YamlLoader, YamlEmitter};
+use yaml_rust::{YamlLoader}; //, YamlEmitter};
 use yaml_rust::Yaml;
 use yaml_rust::yaml::Hash;
 

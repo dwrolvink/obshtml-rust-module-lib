@@ -7,13 +7,13 @@
 use std;
 
 // quick print statement for lazy fingers
-#[macro_export]
-macro_rules! out {
-    ($val:expr) => {
-        println!("{}", $val);
-    };
-}
-pub(crate) use out; 
+// #[macro_export]
+// macro_rules! out {
+//     ($val:expr) => {
+//         println!("{}", $val);
+//     };
+// }
+// pub(crate) use out; 
 
 // compare enum variants, not wrapped values
 pub fn variant_eq<T>(a: &T, b: &T) -> bool {
