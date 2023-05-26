@@ -1,7 +1,7 @@
 use yaml_rust::Yaml;
 // use yaml_rust::yaml::Hash;
 
-use crate::module::verbosity::{verbose_enough, ConfiguredVerbosity, MessageVerbosity};
+use crate::module::verbosity::{verbose_enough, Verbosity, ConfiguredVerbosity, MessageVerbosity};
 use crate::module::modfile::{Modfile};
 
 // use crate::lib::errors;
@@ -118,8 +118,18 @@ impl ObsidianModule {
         return format!("{} ({})", self.module_name, self.module_class_name);
     }
 
-    pub fn verbose_enough(&self, configured_verbosity: ConfiguredVerbosity, message_verbosity: MessageVerbosity,) -> bool {
+    pub fn verbose_enough(&self, message_verbosity: MessageVerbosity,) -> bool {
+        let configured_verbosity = ConfiguredVerbosity(Verbosity::Debug); // CHANGE THIS! We need to read from config. 
         return verbose_enough(configured_verbosity, message_verbosity);
+    }
+
+    pub fn eprintln(&self, verbosity_str: &str, msg: &str) {
+        let verbosity = Verbosity::from_str(verbosity_str).unwrap();
+        let message_verbosity = MessageVerbosity(verbosity.clone());
+        if self.verbose_enough(message_verbosity) {
+            eprint!("[{:^13}]   ", format!("{:?}", verbosity));
+            eprintln!("{}", msg);
+        }
     }
 
     pub fn requires(&self) -> Option<Vec<String>> {

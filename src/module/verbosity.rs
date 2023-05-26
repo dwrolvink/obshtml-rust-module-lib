@@ -1,5 +1,8 @@
+use crate::lib::errors::{Error};
+
 // maximum level of logging to show
 // (if you choose Info, Warning and Error will also be shown)
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum Verbosity {
     Debug = 0,
     Info = 10,
@@ -8,6 +11,25 @@ pub enum Verbosity {
     Error = 40,
     Quiet = 50
 }
+
+impl Verbosity {
+    pub fn from_str(input: &str) -> Result<Verbosity, Error> {
+        let l_input = input.to_lowercase();
+
+        match l_input.as_str() {
+            "debug"  => Ok(Verbosity::Debug),
+            "info"  => Ok(Verbosity::Info),
+            "deprecation"  => Ok(Verbosity::Deprecation),
+            "warning" => Ok(Verbosity::Warning),
+            "error" => Ok(Verbosity::Error),
+            "quiet" => Ok(Verbosity::Quiet),
+            _      => Err(Error::InvalidArgument(
+                format!("Verbosity type {} is not known, known types: <debug, info, deprecation, warning, error, quiet>", l_input)
+            )),
+        }
+    }
+}
+
 pub struct MessageVerbosity(pub Verbosity);
 pub struct ConfiguredVerbosity(pub Verbosity);
 

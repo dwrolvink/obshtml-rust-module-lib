@@ -5,6 +5,7 @@ mod module {
     pub mod verbosity;
     pub mod baseclass;
     pub mod options;
+    pub mod modfile;
 }
 mod cli {
     pub mod config;
@@ -14,16 +15,19 @@ mod lib {
     pub mod errors;
     pub mod paths;
     pub mod misc;
+    pub mod file;
 }
 
 mod stdlib;
+use obshtml::stdlib::*;
 
 use crate::module::options::{compile_default_options, get_configured_options, get_options};
-
+use crate::module::verbosity;
 
 
 fn main() {
     println!("{}", "I have no feet but I must run");
+
 //     let default = compile_default_options("
 // a:
 //   a1: old (should be overwritten)
