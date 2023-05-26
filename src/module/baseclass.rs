@@ -2,6 +2,7 @@ use yaml_rust::Yaml;
 use yaml_rust::yaml::Hash;
 
 use crate::module::verbosity::{verbose_enough, Verbosity, ConfiguredVerbosity, MessageVerbosity};
+use crate::module::modfile::{Modfile};
 
 use crate::lib::errors;
 use crate::lib::paths::{RelativePosixPath, AbsolutePosixPath, PosixPath};
@@ -100,6 +101,10 @@ impl ObsidianModule {
 
     pub fn load_options(&mut self) {
         self.options = options::get_options(self)
+    }
+
+    pub fn modfile(&self, file_path: &str) -> Modfile {
+        Modfile::new(&self, file_path)
     }
 
     // return f'{self.module_name} ({self.module_class_name})'

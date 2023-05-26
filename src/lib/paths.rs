@@ -60,6 +60,7 @@ impl AbsolutePosixPath
         // happy path
         return Ok(AbsolutePosixPath(Some(path)));
     }
+
     // pub fn to_relative(root: AbsolutePosixPath) -> RelativePosixPath {
     //     // ??
     // }
@@ -70,6 +71,10 @@ impl AbsolutePosixPath
             None => panic!("Cannot unpack absolute path, as contents are none!"),
             Some(s) => return s.clone(),
         }
+    }
+
+    pub fn clone(&self) -> AbsolutePosixPath {
+        AbsolutePosixPath::new(self.to_string()).unwrap()
     }
 }
 
