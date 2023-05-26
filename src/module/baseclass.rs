@@ -29,6 +29,7 @@ pub struct ObsidianModule {
     pub states: ObsidianModuleStates,
     pub run_fn: fn(ObsidianModule),
     pub accept_fn: fn(ObsidianModule),
+    pub provides: Vec<String>,
     _verbosity_overwrite: Option<ConfiguredVerbosity>,
 }
 impl Default for ObsidianModule {
@@ -43,6 +44,7 @@ impl Default for ObsidianModule {
             module_data_folder: AbsolutePosixPath::new("".to_string()).unwrap(),
             run_fn: placeholder_run_fn,
             accept_fn: placeholder_accept_fn,
+            provides: Vec::new(),
             states: ObsidianModuleStates{
                 _cancelled_run: false
             }
@@ -76,6 +78,7 @@ pub struct ObsidianModuleConfig<'a> {
     pub default_options: Yaml,
     pub run_fn: fn(ObsidianModule),
     pub accept_fn: fn(ObsidianModule),
+    pub provides: Vec<String>,
 }
 
 // METHODS
@@ -83,7 +86,7 @@ pub struct ObsidianModuleConfig<'a> {
 impl ObsidianModule {
 
     // recommended way to instantiate a new ObsidianModule struct
-    pub fn new(config: &ObsidianModuleConfig, mdf: AbsolutePosixPath) -> ObsidianModule {
+    pub fn new(config: ObsidianModuleConfig, mdf: AbsolutePosixPath) -> ObsidianModule {
         let mut obsmod = ObsidianModule {
             module_name: config.module_name.to_string(),
             module_class_name: config.module_class_name.to_string(),
@@ -92,6 +95,7 @@ impl ObsidianModule {
             default_options: config.default_options.clone(),
             run_fn: config.run_fn,
             accept_fn: config.accept_fn,
+            provides: config.provides,
             ..Default::default()
         };
 

@@ -5,6 +5,7 @@ use crate::module::baseclass::ObsidianModule;
 
 pub struct Modfile {
     module_data_folder: AbsolutePosixPath,
+    provides: Vec<String>,
     file_path: RelativePosixPath,
 }
 
@@ -12,6 +13,7 @@ impl Modfile  {
     pub fn new(obsmod: &ObsidianModule, file_path: &str) -> Modfile {
         Modfile {
             module_data_folder: obsmod.module_data_folder.clone(),
+            provides: obsmod.provides.clone(),
             file_path: RelativePosixPath(file_path.to_string()),
         }
     }
@@ -29,7 +31,17 @@ impl Modfile  {
     }
 
     pub fn write(&self, contents: &str) -> io::Result<()> {
+        // test if file is in provides
+        let rel_path = self.file_path.to_string();
+        if ! self.provides.contains(&rel_path) {
+            eprintln!("Error: Trying to write to modfile {}, but it is not listed in the module's provides property.", rel_path);
+            return Err(io::Error::new(io::ErrorKind::Other, "File not listed in provides."));
+        }
         let abs_file_path = self.get_abs_file_path();
         file::write(&abs_file_path, contents)
     }
+}
+
+pub fn compile_provides(input: Vec<&str>) -> Vec<String> {
+    return input.iter().map(|s| s.to_string()).collect();
 }
