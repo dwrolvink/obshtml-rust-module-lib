@@ -25,7 +25,9 @@ pub fn get_configured_options(obsmod: &ObsidianModule) -> Option<Yaml> {
     let modconf = &module_configs[module_name];
 
     return match modconf {
-        Yaml::BadValue => None,
+        Yaml::BadValue => {
+            None
+        },
         _ => Some(modconf.clone())
     };
 }
@@ -34,7 +36,19 @@ pub fn get_configured_options(obsmod: &ObsidianModule) -> Option<Yaml> {
 pub fn get_options(obsmod: &ObsidianModule) -> Yaml {
     // get default options
     let default = obsmod.default_options.clone();
-    let configured = get_configured_options(obsmod).unwrap();
+    let configured_opt = get_configured_options(obsmod);
+    
+
+    // if no configured config could be found, just take the default config, no merging required
+    let configured;
+    match configured_opt {
+        None => {
+            return default
+        },
+        _ => {
+            configured = configured_opt.unwrap();
+        } 
+    }
 
     fn rec(mut default: Hash, configured: &Yaml) -> Hash {// -> Yaml {
         for entry in default.iter_mut() {
