@@ -1,5 +1,6 @@
+use std::io;
 use crate::lib::paths::{RelativePosixPath, AbsolutePosixPath};
-use crate::lib::misc::{read_file};
+use crate::lib::file;
 use crate::module::baseclass::ObsidianModule;
 
 pub struct Modfile {
@@ -24,6 +25,11 @@ impl Modfile  {
 
     pub fn read(&self) -> Option<String> {
         let abs_file_path = self.get_abs_file_path();
-        read_file(&abs_file_path)
+        file::read(&abs_file_path)
+    }
+
+    pub fn write(&self, contents: &str) -> io::Result<()> {
+        let abs_file_path = self.get_abs_file_path();
+        file::write(&abs_file_path, contents)
     }
 }

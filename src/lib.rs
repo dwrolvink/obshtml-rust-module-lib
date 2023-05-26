@@ -14,6 +14,7 @@ pub mod lib {
     pub mod errors;
     pub mod paths;
     pub mod misc;
+    pub mod file;
 }
 
 pub type ObsidianModuleConfig<'a> = module::baseclass::ObsidianModuleConfig<'a>;

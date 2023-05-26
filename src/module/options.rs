@@ -2,7 +2,6 @@ use yaml_rust::{YamlLoader, YamlEmitter};
 use yaml_rust::Yaml;
 use yaml_rust::yaml::Hash;
 
-use crate::lib::misc::{read_file};
 use crate::module::baseclass::ObsidianModule;
 use crate::stdlib::*;
 
