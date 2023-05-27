@@ -15,13 +15,9 @@ pub fn get_configured_options(obsmod: &ObsidianModule) -> Option<Yaml> {
     // get module name
     let module_name = obsmod.module_name.as_str();
     
-    // parse config file contents as yaml
-    let contents = obsmod.modfile("config.yml").read().unwrap();
-    let docs = YamlLoader::load_from_str(contents.as_str()).unwrap();
-    let doc = &docs[0];
 
     // extract only the module config of our module
-    let module_configs = &doc["module_config"];
+    let module_configs = &obsmod.config["module_config"];
     let modconf = &module_configs[module_name];
 
     return match modconf {

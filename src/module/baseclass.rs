@@ -1,5 +1,6 @@
 use yaml_rust::Yaml;
-// use yaml_rust::yaml::Hash;
+use yaml_rust::YamlLoader;
+use yaml_rust::Yaml::Hash;
 
 use crate::module::verbosity::{verbose_enough, Verbosity, ConfiguredVerbosity, MessageVerbosity};
 use crate::module::modfile::{Modfile};
@@ -24,22 +25,24 @@ pub struct ObsidianModule {
     pub module_class_name: String,
     pub persistent: bool,
     pub default_options: Yaml,
+    pub config: Yaml,
     pub options: Yaml,
     pub module_data_folder: AbsolutePosixPath,
     pub states: ObsidianModuleStates,
     pub run_fn: fn(ObsidianModule),
     pub accept_fn: fn(ObsidianModule),
     pub provides: Vec<String>,
-    _verbosity_overwrite: Option<ConfiguredVerbosity>,
+    pub verbosity: ConfiguredVerbosity,
 }
 impl Default for ObsidianModule {
     fn default() -> ObsidianModule {
         ObsidianModule {
             module_name: "<module_name>".to_string(),
             module_class_name: "ObsidianModule".to_string(),
-            _verbosity_overwrite: None,
+            verbosity: ConfiguredVerbosity(Verbosity::Error),
             persistent: false,
             default_options: Yaml::Null,
+            config: Yaml::Null,
             options: Yaml::Null,
             module_data_folder: AbsolutePosixPath::new("".to_string()).unwrap(),
             run_fn: placeholder_run_fn,
@@ -99,18 +102,31 @@ impl ObsidianModule {
             ..Default::default()
         };
 
-        // merge default config and config from user
-        obsmod.load_options();
+        obsmod.load_settings();
 
         return obsmod;
     }
 
-    pub fn load_options(&mut self) {
-        self.options = options::get_options(self)
+    pub fn load_settings(&mut self) {
+        self.config = self.get_config();
+        self.options = options::get_options(self);
+        self.verbosity = self.get_configured_verbosity();
+
     }
 
     pub fn modfile(&self, file_path: &str) -> Modfile {
         Modfile::new(&self, file_path)
+    }
+
+    pub fn get_config(&self) -> Yaml {
+        let contents = self.modfile("config.yml").read().unwrap();
+        let docs = YamlLoader::load_from_str(contents.as_str()).unwrap();
+        let doc = &docs[0];
+        return doc.clone();
+    }
+    pub fn get_configured_verbosity(&self) -> ConfiguredVerbosity {
+        let verbosity_str = self.config["verbosity"].as_str().unwrap();
+        return ConfiguredVerbosity(Verbosity::from_str(verbosity_str).unwrap());
     }
 
     // return f'{self.module_name} ({self.module_class_name})'
@@ -119,11 +135,10 @@ impl ObsidianModule {
     }
 
     pub fn verbose_enough(&self, message_verbosity: MessageVerbosity,) -> bool {
-        let configured_verbosity = ConfiguredVerbosity(Verbosity::Debug); // CHANGE THIS! We need to read from config. 
-        return verbose_enough(configured_verbosity, message_verbosity);
+        return verbose_enough(self.verbosity, message_verbosity);
     }
 
-    pub fn eprintln(&self, verbosity_str: &str, msg: &str) {
+    pub fn stderr(&self, verbosity_str: &str, msg: &str) {
         let verbosity = Verbosity::from_str(verbosity_str).unwrap();
         let message_verbosity = MessageVerbosity(verbosity.clone());
         if self.verbose_enough(message_verbosity) {

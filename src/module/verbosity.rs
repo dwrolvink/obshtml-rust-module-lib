@@ -30,7 +30,10 @@ impl Verbosity {
     }
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct MessageVerbosity(pub Verbosity);
+
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub struct ConfiguredVerbosity(pub Verbosity);
 
 // compares whether the requested verbosity is higher or equal to the set verbosity
