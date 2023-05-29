@@ -10,6 +10,9 @@ pub mod cli {
     pub mod config;
     pub mod execute;
 }
+pub mod markdown {
+    pub mod misc;
+}
 pub mod lib {
     pub mod errors;
     pub mod paths;

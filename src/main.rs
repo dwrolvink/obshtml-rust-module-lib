@@ -1,5 +1,6 @@
 // extern crate json;
 extern crate yaml_rust;
+extern crate regex;
 
 mod module {
     pub mod verbosity;
