@@ -77,7 +77,6 @@ pub struct ObsidianModuleStates {
 pub struct ObsidianModuleConfig<'a> {
     pub module_name: &'a str,
     pub module_class_name: &'a str,
-    pub persistent: bool,
     pub default_options: Yaml,
     pub run_fn: fn(ObsidianModule),
     pub accept_fn: fn(ObsidianModule),
@@ -94,7 +93,6 @@ impl ObsidianModule {
             module_name: config.module_name.to_string(),
             module_class_name: config.module_class_name.to_string(),
             module_data_folder: mdf,
-            persistent: config.persistent,
             default_options: config.default_options.clone(),
             run_fn: config.run_fn,
             accept_fn: config.accept_fn,
@@ -124,6 +122,7 @@ impl ObsidianModule {
         let doc = &docs[0];
         return doc.clone();
     }
+    
     pub fn get_configured_verbosity(&self) -> ConfiguredVerbosity {
         let verbosity_str = self.config["verbosity"].as_str().unwrap();
         return ConfiguredVerbosity(Verbosity::from_str(verbosity_str).unwrap());
